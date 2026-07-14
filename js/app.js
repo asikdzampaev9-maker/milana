@@ -2,7 +2,7 @@ const CATALOG_URL = "data/catalog.json";
 const ITEM_BASE = "data/items/";
 const OVERRIDES_URL = "data/overrides.json";
 const CART_KEY = "milana_cart_v1";
-const ORDER_EMAIL = "group.milana@inbox.ru";
+const ORDER_EMAIL = "milanastore000@mail.ru";
 const FORMSUBMIT_AJAX = `https://formsubmit.co/ajax/${ORDER_EMAIL}`;
 const FORMSUBMIT_FORM = `https://formsubmit.co/${ORDER_EMAIL}`;
 
@@ -444,7 +444,7 @@ async function submitOrder(phone, email, comment, items) {
     }
     throw new Error(
       apiMsg ||
-        "FormSubmit отклонил заявку. Подтвердите адрес group.milana@inbox.ru по письму от FormSubmit."
+        "FormSubmit отклонил заявку. Подтвердите адрес milanastore000@mail.ru по письму от FormSubmit."
     );
   }
 
@@ -455,7 +455,7 @@ async function submitOrder(phone, email, comment, items) {
   }
 
   throw new Error(
-    "FormSubmit вернул неожиданный ответ. Откройте сайт через локальный сервер (npx serve .), проверьте вкладку Network и папку «Спам» на group.milana@inbox.ru."
+    "FormSubmit вернул неожиданный ответ. Откройте сайт через локальный сервер (npx serve .), проверьте вкладку Network и папку «Спам» на milanastore000@mail.ru."
   );
 }
 
