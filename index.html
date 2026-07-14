@@ -57,21 +57,27 @@
           Заявка придёт менеджеру на почту.
         </p>
       </div>
-      <form class="order-form contact-form" id="contact-form">
+      <!-- Обычная отправка через FormSubmit: надёжно работает на любом хостинге
+           и запускает письмо-активацию. Адрес получателя — в data-* не нужен,
+           он прямо в action. При смене почты меняйте и здесь, и в js/app.js. -->
+      <form class="order-form contact-form" id="contact-form"
+            action="https://formsubmit.co/group.milana@inbox.ru" method="POST">
+        <input type="hidden" name="_subject" value="Milana Group — обратная связь с сайта" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_template" value="table" />
         <label>
           Имя <span class="optional">(необязательно)</span>
-          <input type="text" name="name" autocomplete="name" placeholder="Как к вам обращаться" />
+          <input type="text" name="Имя" autocomplete="name" placeholder="Как к вам обращаться" />
         </label>
         <label>
           Телефон
-          <input type="tel" name="phone" required autocomplete="tel" placeholder="+7 …" inputmode="tel" />
+          <input type="tel" name="Телефон" required autocomplete="tel" placeholder="+7 …" inputmode="tel" />
         </label>
         <label>
           Сообщение <span class="optional">(необязательно)</span>
-          <textarea name="message" rows="3" placeholder="Какая модель интересует, вопрос по доставке…"></textarea>
+          <textarea name="Сообщение" rows="3" placeholder="Какая модель интересует, вопрос по доставке…"></textarea>
         </label>
         <button type="submit" class="btn-primary btn-block btn-touch" id="contact-submit">Отправить заявку</button>
-        <p class="form-status" id="contact-status" role="status" aria-live="polite"></p>
       </form>
     </section>
   </main>
@@ -154,6 +160,6 @@
     </div>
   </dialog>
 
-  <script src="js/app.js" type="module"></script>
+  <script src="js/app.js?v=2" type="module"></script>
 </body>
 </html>

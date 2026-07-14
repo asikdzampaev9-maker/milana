@@ -2,7 +2,7 @@ const CATALOG_URL = "data/catalog.json";
 const ITEM_BASE = "data/items/";
 const OVERRIDES_URL = "data/overrides.json";
 const CART_KEY = "milana_cart_v1";
-const ORDER_EMAIL = "milana.group000@mail.ru";
+const ORDER_EMAIL = "group.milana@inbox.ru";
 const FORMSUBMIT_AJAX = `https://formsubmit.co/ajax/${ORDER_EMAIL}`;
 const FORMSUBMIT_FORM = `https://formsubmit.co/${ORDER_EMAIL}`;
 
@@ -444,7 +444,7 @@ async function submitOrder(phone, email, comment, items) {
     }
     throw new Error(
       apiMsg ||
-        "FormSubmit отклонил заявку. Подтвердите адрес milana.group000@mail.ru по письму от FormSubmit."
+        "FormSubmit отклонил заявку. Подтвердите адрес group.milana@inbox.ru по письму от FormSubmit."
     );
   }
 
@@ -455,85 +455,8 @@ async function submitOrder(phone, email, comment, items) {
   }
 
   throw new Error(
-    "FormSubmit вернул неожиданный ответ. Откройте сайт через локальный сервер (npx serve .), проверьте вкладку Network и папку «Спам» на milana.group000@mail.ru."
+    "FormSubmit вернул неожиданный ответ. Откройте сайт через локальный сервер (npx serve .), проверьте вкладку Network и папку «Спам» на group.milana@inbox.ru."
   );
-}
-
-/**
- * Отправка формы обратной связи (звонок/вопрос) на почту менеджера
- * через FormSubmit — по той же схеме, что и заявка из корзины.
- */
-async function submitContact(name, phone, message) {
-  const text = `Обратная связь с сайта Milana Group\n\nИмя: ${name || "—"}\nТелефон: ${phone}\n\nСообщение:\n${message || "—"}`;
-  const p = new URLSearchParams();
-  p.set("name", name || "Клиент");
-  p.set("phone", phone);
-  p.set("message", text);
-  p.set("comment", message || "");
-  p.set("_subject", "Milana Group — обратная связь с сайта");
-  p.set("_captcha", "false");
-
-  if (window.location.protocol === "file:") {
-    submitOrderViaBrowserForm(name || "Клиент", "", message, text);
-    return { fallback: true };
-  }
-
-  const res = await fetch(FORMSUBMIT_AJAX, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Accept: "application/json",
-    },
-    body: p.toString(),
-  });
-  const raw = await res.text();
-  let data = null;
-  try {
-    data = raw ? JSON.parse(raw) : null;
-  } catch {
-    /* не JSON */
-  }
-  const succeeded = data && String(data.success).toLowerCase() === "true";
-  if (succeeded) return data;
-
-  // не JSON / ошибка / file:// — резервная отправка обычным POST в iframe
-  submitOrderViaBrowserForm(name || "Клиент", "", message, text);
-  return { fallback: true };
-}
-
-function initContactForm() {
-  const form = document.getElementById("contact-form");
-  if (!form) return;
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const status = document.getElementById("contact-status");
-    const btn = document.getElementById("contact-submit");
-    const fd = new FormData(form);
-    const name = String(fd.get("name") || "").trim();
-    const phone = String(fd.get("phone") || "").trim();
-    const message = String(fd.get("message") || "").trim();
-    status.textContent = "";
-    status.className = "form-status";
-    if (!phone) {
-      status.textContent = "Укажите телефон для связи.";
-      status.classList.add("err");
-      return;
-    }
-    btn.disabled = true;
-    try {
-      await submitContact(name, phone, message);
-      form.reset();
-      status.textContent = "Спасибо! Заявка отправлена — мы перезвоним вам.";
-      status.classList.add("ok");
-    } catch (err) {
-      console.error(err);
-      status.textContent =
-        "Не удалось отправить. Позвоните нам напрямую или попробуйте ещё раз.";
-      status.classList.add("err");
-    } finally {
-      btn.disabled = false;
-    }
-  });
 }
 
 async function init() {
@@ -611,6 +534,7 @@ async function init() {
       submitBtn.disabled = false;
       return;
     }
+    status.textContent = "Отправляем заявку…";
     try {
       await submitOrder(phone, email, comment, itemsSnapshot);
       saveCart([]);
@@ -639,7 +563,7 @@ async function init() {
   });
 
   renderCart(loadCart());
-  initContactForm();
+  // Форма обратной связи отправляется обычным POST (native FormSubmit) — JS не нужен.
 
   await loadOverrides();
 
