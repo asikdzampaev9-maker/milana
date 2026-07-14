@@ -2,9 +2,10 @@ const CATALOG_URL = "data/catalog.json";
 const ITEM_BASE = "data/items/";
 const OVERRIDES_URL = "data/overrides.json";
 const CART_KEY = "milana_cart_v1";
-const ORDER_EMAIL = "milanastore000@mail.ru";
-const FORMSUBMIT_AJAX = `https://formsubmit.co/ajax/${ORDER_EMAIL}`;
-const FORMSUBMIT_FORM = `https://formsubmit.co/${ORDER_EMAIL}`;
+// Приём заявок — Web3Forms (надёжный сервис). Ключ привязан к milanastore000@mail.ru.
+// Ключ не секретный: он и так виден в HTML формы обратной связи. Тот же ключ — в index.html.
+const WEB3FORMS_URL = "https://api.web3forms.com/submit";
+const WEB3FORMS_KEY = "31809651-1475-483e-a58b-fcfd86ff660e";
 
 /** Подпись для позиций без отдельного названия в JSON (не показываем служебный id вроде p27-1). */
 const CATALOG_PLACEHOLDER_TITLE = "Модель из каталога";
@@ -339,59 +340,24 @@ function buildOrderText(items, comment) {
   return text;
 }
 
-function formSubmitIframeName() {
-  const id = "formsubmit-sink";
-  let iframe = document.getElementById(id);
-  if (!iframe) {
-    iframe = document.createElement("iframe");
-    iframe.id = id;
-    iframe.name = id;
-    iframe.title = "Отправка заявки";
-    iframe.setAttribute("aria-hidden", "true");
-    iframe.style.cssText = "position:absolute;width:0;height:0;border:0;visibility:hidden";
-    document.body.appendChild(iframe);
+/** Универсальная отправка через Web3Forms. Бросает ошибку, если не success. */
+async function submitViaWeb3Forms(fields) {
+  const res = await fetch(WEB3FORMS_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify({ access_key: WEB3FORMS_KEY, ...fields }),
+  });
+  let data = null;
+  try {
+    data = await res.json();
+  } catch {
+    /* не JSON */
   }
-  return id;
-}
-
-function submitOrderViaBrowserForm(phone, email, comment, message) {
-  const form = document.createElement("form");
-  form.method = "POST";
-  form.action = FORMSUBMIT_FORM;
-  form.target = formSubmitIframeName();
-  const pairs = {
-    name: phone || "Клиент",
-    phone,
-    email,
-    message,
-    comment: comment || "",
-    _subject: "Milana Group — заявка с каталога",
-    _replyto: email,
-    _captcha: "false",
-  };
-  for (const [key, val] of Object.entries(pairs)) {
-    const input = document.createElement("input");
-    input.type = "hidden";
-    input.name = key;
-    input.value = String(val ?? "");
-    form.appendChild(input);
-  }
-  document.body.appendChild(form);
-  form.submit();
-  form.remove();
-}
-
-function orderFormBodyParams(phone, email, comment, message) {
-  const p = new URLSearchParams();
-  p.set("name", phone || "Клиент");
-  p.set("phone", phone);
-  p.set("email", email);
-  p.set("comment", comment || "");
-  p.set("message", message);
-  p.set("_subject", "Milana Group — заявка с каталога");
-  p.set("_replyto", email);
-  p.set("_captcha", "false");
-  return p;
+  if (data && data.success) return data;
+  throw new Error(
+    (data && data.message) ||
+      "Сервис приёма заявок временно недоступен. Попробуйте ещё раз или позвоните нам."
+  );
 }
 
 async function submitOrder(phone, email, comment, items) {
@@ -399,64 +365,57 @@ async function submitOrder(phone, email, comment, items) {
     throw new Error("Корзина пуста — добавьте позиции и снова нажмите «Оставить заявку».");
   }
   const message = buildOrderText(items, comment);
-  const encoded = orderFormBodyParams(phone, email, comment, message);
-
-  if (window.location.protocol === "file:") {
-    submitOrderViaBrowserForm(phone, email, comment, message);
-    return { fallback: true };
-  }
-
-  const res = await fetch(FORMSUBMIT_AJAX, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Accept: "application/json",
-    },
-    body: encoded.toString(),
+  return submitViaWeb3Forms({
+    subject: "Milana Group — заявка с каталога",
+    from_name: "Каталог Milana Group",
+    email: email || undefined, // reply-to для менеджера
+    Телефон: phone,
+    Почта: email || "—",
+    Комментарий: comment || "—",
+    Заявка: message,
   });
-  const text = await res.text();
-  let data = null;
-  try {
-    data = text ? JSON.parse(text) : null;
-  } catch {
-    /* не JSON */
-  }
+}
 
-  const succeeded =
-    data &&
-    (data.success === true ||
-      data.success === "true" ||
-      String(data.success).toLowerCase() === "true");
-
-  const failed =
-    data &&
-    (data.success === false || data.success === "false" || String(data.success).toLowerCase() === "false");
-
-  if (succeeded) {
-    return data;
-  }
-
-  if (failed) {
-    const apiMsg = typeof data.message === "string" ? data.message : "";
-    if (/web server|html files|file:\/\//i.test(apiMsg) || /Make sure you open/i.test(apiMsg)) {
-      submitOrderViaBrowserForm(phone, email, comment, message);
-      return { fallback: true };
+function initContactForm() {
+  const form = document.getElementById("contact-form");
+  if (!form) return;
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const status = document.getElementById("contact-status");
+    const btn = document.getElementById("contact-submit");
+    const fd = new FormData(form);
+    const name = String(fd.get("Имя") || "").trim();
+    const phone = String(fd.get("Телефон") || "").trim();
+    const msg = String(fd.get("Сообщение") || "").trim();
+    status.textContent = "";
+    status.className = "form-status";
+    if (!phone) {
+      status.textContent = "Укажите телефон для связи.";
+      status.classList.add("err");
+      return;
     }
-    throw new Error(
-      apiMsg ||
-        "FormSubmit отклонил заявку. Подтвердите адрес milanastore000@mail.ru по письму от FormSubmit."
-    );
-  }
-
-  // Не JSON, ошибка HTTP или тело без success:true — пробуем обычный POST в iframe
-  if (!res.ok || !data) {
-    submitOrderViaBrowserForm(phone, email, comment, message);
-    return { fallback: true };
-  }
-
-  throw new Error(
-    "FormSubmit вернул неожиданный ответ. Откройте сайт через локальный сервер (npx serve .), проверьте вкладку Network и папку «Спам» на milanastore000@mail.ru."
-  );
+    btn.disabled = true;
+    status.textContent = "Отправляем…";
+    try {
+      await submitViaWeb3Forms({
+        subject: "Milana Group — обратная связь с сайта",
+        from_name: "Сайт Milana Group",
+        Имя: name || "—",
+        Телефон: phone,
+        Сообщение: msg || "—",
+      });
+      form.reset();
+      status.textContent = "Спасибо! Заявка отправлена — мы перезвоним вам.";
+      status.classList.add("ok");
+    } catch (err) {
+      console.error(err);
+      status.textContent =
+        "Не удалось отправить. Позвоните нам напрямую или попробуйте ещё раз.";
+      status.classList.add("err");
+    } finally {
+      btn.disabled = false;
+    }
+  });
 }
 
 async function init() {
@@ -563,7 +522,7 @@ async function init() {
   });
 
   renderCart(loadCart());
-  // Форма обратной связи отправляется обычным POST (native FormSubmit) — JS не нужен.
+  initContactForm();
 
   await loadOverrides();
 

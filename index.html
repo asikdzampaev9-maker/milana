@@ -57,14 +57,14 @@
           Заявка придёт менеджеру на почту.
         </p>
       </div>
-      <!-- Обычная отправка через FormSubmit: надёжно работает на любом хостинге
-           и запускает письмо-активацию. Адрес получателя — в data-* не нужен,
-           он прямо в action. При смене почты меняйте и здесь, и в js/app.js. -->
+      <!-- Отправка через Web3Forms. JS перехватывает и шлёт без перезагрузки;
+           если JS отключён — сработает обычный POST (action). Ключ — публичный,
+           тот же ключ продублирован в js/app.js для формы заявки из корзины. -->
       <form class="order-form contact-form" id="contact-form"
-            action="https://formsubmit.co/milanastore000@mail.ru" method="POST">
-        <input type="hidden" name="_subject" value="Milana Group — обратная связь с сайта" />
-        <input type="hidden" name="_captcha" value="false" />
-        <input type="hidden" name="_template" value="table" />
+            action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="31809651-1475-483e-a58b-fcfd86ff660e" />
+        <input type="hidden" name="subject" value="Milana Group — обратная связь с сайта" />
+        <input type="hidden" name="from_name" value="Сайт Milana Group" />
         <label>
           Имя <span class="optional">(необязательно)</span>
           <input type="text" name="Имя" autocomplete="name" placeholder="Как к вам обращаться" />
@@ -78,6 +78,7 @@
           <textarea name="Сообщение" rows="3" placeholder="Какая модель интересует, вопрос по доставке…"></textarea>
         </label>
         <button type="submit" class="btn-primary btn-block btn-touch" id="contact-submit">Отправить заявку</button>
+        <p class="form-status" id="contact-status" role="status" aria-live="polite"></p>
       </form>
     </section>
   </main>
@@ -160,6 +161,6 @@
     </div>
   </dialog>
 
-  <script src="js/app.js?v=3" type="module"></script>
+  <script src="js/app.js?v=4" type="module"></script>
 </body>
 </html>
