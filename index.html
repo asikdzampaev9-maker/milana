@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#c8102e" />
+  <title>Milana Group — каталог мебели</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:ital,wght@0,400;0,500;0,600;0,700;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="logo">
+      <span class="logo-mark">M</span>
+      <div>
+        <strong>Milana Group</strong>
+        <span class="logo-sub">Каталог</span>
+      </div>
+    </div>
+    <nav class="nav-actions">
+      <button type="button" class="btn-ghost" id="btn-scroll-catalog">Каталог</button>
+      <button type="button" class="btn-cart" id="btn-open-cart" aria-label="Корзина">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 6h15l-1.5 9h-12z" />
+          <circle cx="9" cy="20" r="1" />
+          <circle cx="18" cy="20" r="1" />
+          <path d="M6 6L5 3H2" />
+        </svg>
+        <span class="cart-badge" id="cart-badge" hidden>0</span>
+      </button>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <p class="hero-eyebrow">Мебель для дома</p>
+    <h1>Выберите предметы из каталога — оформите заявку в один шаг</h1>
+  </section>
+
+  <main>
+    <div class="toolbar">
+      <h2>Коллекция</h2>
+      <p class="toolbar-hint" id="catalog-meta"></p>
+    </div>
+    <div class="catalog-grid" id="catalog-grid"></div>
+    <p class="load-error" id="catalog-error" hidden></p>
+
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="contact-text">
+        <p class="hero-eyebrow">Обратная связь</p>
+        <h2 id="contact-title">Остались вопросы? Перезвоним</h2>
+        <p class="contact-lead">
+          Оставьте телефон — подберём модель, посчитаем стоимость и сроки.
+          Заявка придёт менеджеру на почту.
+        </p>
+      </div>
+      <form class="order-form contact-form" id="contact-form">
+        <label>
+          Имя <span class="optional">(необязательно)</span>
+          <input type="text" name="name" autocomplete="name" placeholder="Как к вам обращаться" />
+        </label>
+        <label>
+          Телефон
+          <input type="tel" name="phone" required autocomplete="tel" placeholder="+7 …" inputmode="tel" />
+        </label>
+        <label>
+          Сообщение <span class="optional">(необязательно)</span>
+          <textarea name="message" rows="3" placeholder="Какая модель интересует, вопрос по доставке…"></textarea>
+        </label>
+        <button type="submit" class="btn-primary btn-block btn-touch" id="contact-submit">Отправить заявку</button>
+        <p class="form-status" id="contact-status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Milana Group · каталог мебели</span>
+    <span>Заявки уходят на почту менеджера</span>
+  </footer>
+
+  <dialog class="modal" id="modal-product" aria-labelledby="modal-product-title">
+    <div class="modal-inner">
+      <button type="button" class="modal-close" id="modal-product-close" aria-label="Закрыть">&times;</button>
+      <div class="modal-product-layout">
+        <div class="modal-product-visual">
+          <img src="" alt="" id="modal-product-img" />
+        </div>
+        <div class="modal-product-info">
+          <p class="modal-category" id="modal-product-category" hidden></p>
+          <h2 id="modal-product-title"></h2>
+          <p class="modal-short" id="modal-product-short" hidden></p>
+          <p class="modal-desc" id="modal-product-desc" hidden></p>
+          <dl class="specs" id="modal-product-specs"></dl>
+          <p class="modal-price" id="modal-product-price"></p>
+          <div class="modal-actions">
+            <button type="button" class="btn-primary" id="modal-add-cart">В корзину</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="drawer" id="drawer-cart">
+    <div class="drawer-panel">
+      <div class="drawer-head">
+        <h2>Корзина</h2>
+        <button type="button" class="modal-close" id="drawer-cart-close" aria-label="Закрыть">&times;</button>
+      </div>
+      <div class="drawer-body">
+        <ul class="cart-list" id="cart-list"></ul>
+        <p class="cart-empty" id="cart-empty">Пока пусто — добавьте позиции из каталога.</p>
+      </div>
+      <div class="drawer-foot">
+        <p class="cart-summary" id="cart-summary"></p>
+        <button type="button" class="btn-primary btn-block" id="btn-checkout" disabled>Оставить заявку</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="modal modal-narrow" id="modal-order" aria-labelledby="modal-order-title">
+    <div class="modal-inner">
+      <button type="button" class="modal-close" id="modal-order-close" aria-label="Закрыть">&times;</button>
+      <div id="order-form-block">
+        <h2 id="modal-order-title">Заявка на расчёт</h2>
+        <p class="form-hint">Укажите контакты — состав заказа приложится к письму автоматически.</p>
+        <form id="order-form" class="order-form">
+          <label>
+            Телефон
+            <input type="tel" name="phone" required autocomplete="tel" placeholder="+7 …" inputmode="tel" />
+          </label>
+          <label>
+            Электронная почта
+            <input type="email" name="email" required autocomplete="email" inputmode="email" />
+          </label>
+          <label>
+            Комментарий <span class="optional">(необязательно)</span>
+            <textarea name="comment" rows="3" placeholder="Адрес доставки, удобное время звонка…"></textarea>
+          </label>
+          <button type="submit" class="btn-primary btn-block btn-touch" id="order-submit">Отправить</button>
+          <p class="form-status" id="order-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+      <div class="order-success-panel" id="order-success-panel" hidden role="status" aria-live="polite">
+        <div class="order-success-icon" aria-hidden="true">✓</div>
+        <h3 class="order-success-title">Заявка отправлена</h3>
+        <p class="order-success-text">
+          Спасибо! Мы получили вашу заявку и свяжемся с вами по указанному телефону и электронной почте.
+        </p>
+        <button type="button" class="btn-primary btn-block btn-touch" id="order-success-close">Готово</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="js/app.js" type="module"></script>
+</body>
+</html>

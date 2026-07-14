@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Node (если появится)
+node_modules/
+
+# OS / IDE
+Thumbs.db
+.Desktop.ini
+.DS_Store
+.idea/
+.vscode/
+
+# Локальные секреты (на будущее)
+.env
+.env.*
+
+# Временные файлы OCR / отладки
+*_ocr_sample.txt
+_p30_3_ocr.txt
+
+# Бэкап старого каталога и временное (не для репозитория)
+data_backup_old/
+data_new/
+scratch_preview/
+
+# Промежуточные артефакты сборки каталога (не нужны сайту)
+data/catalog-source/
+data/images-extracted/

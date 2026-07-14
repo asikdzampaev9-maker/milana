@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Milana Group — админка каталога</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:ital,wght@0,400;0,500;0,600;0,700;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body class="admin">
+  <!-- Ввод пароля -->
+  <div class="admin-gate" id="admin-gate">
+    <form class="admin-gate-box" id="admin-gate-form">
+      <span class="logo-mark">M</span>
+      <h1>Админка каталога</h1>
+      <p class="form-hint">Введите пароль для доступа к редактированию цен и описаний.</p>
+      <label>
+        Пароль
+        <input type="password" id="admin-pass" autocomplete="current-password" autofocus />
+      </label>
+      <button type="submit" class="btn-primary btn-block btn-touch">Войти</button>
+      <p class="form-status" id="admin-gate-status" role="status"></p>
+    </form>
+  </div>
+
+  <!-- Панель -->
+  <div class="admin-app" id="admin-app" hidden>
+    <header class="admin-header">
+      <div class="logo">
+        <span class="logo-mark">M</span>
+        <div>
+          <strong>Milana Group</strong>
+          <span class="logo-sub">Админка</span>
+        </div>
+      </div>
+      <div class="admin-header-actions">
+        <a class="btn-ghost" href="index.html" target="_blank" rel="noopener">Открыть сайт ↗</a>
+        <button type="button" class="btn-ghost" id="admin-logout">Выйти</button>
+      </div>
+    </header>
+
+    <div class="admin-toolbar">
+      <div>
+        <h2>Товары каталога</h2>
+        <p class="toolbar-hint" id="admin-meta"></p>
+      </div>
+      <input type="search" id="admin-search" class="admin-search" placeholder="Поиск по названию…" />
+    </div>
+
+    <div class="admin-actions-bar">
+      <span class="admin-draft-state" id="admin-draft-state"></span>
+      <div class="admin-actions-bar-btns">
+        <label class="btn-ghost admin-import">
+          Загрузить overrides.json
+          <input type="file" id="admin-import" accept="application/json,.json" hidden />
+        </label>
+        <button type="button" class="btn-ghost" id="admin-reset">Сбросить черновик</button>
+        <button type="button" class="btn-primary" id="admin-download">Скачать overrides.json</button>
+      </div>
+    </div>
+
+    <details class="admin-help">
+      <summary>Как опубликовать изменения на сайте</summary>
+      <ol>
+        <li>Отредактируйте цены и описания — они автоматически сохраняются в этом браузере как черновик.</li>
+        <li>Нажмите <b>«Скачать overrides.json»</b> — браузер сохранит файл.</li>
+        <li>Положите скачанный файл в папку сайта <code>data/overrides.json</code> (заменив старый) на вашем хостинге.</li>
+        <li>Обновите сайт — новые цены и описания увидят все посетители.</li>
+      </ol>
+      <p class="admin-note">Черновик хранится только в этом браузере. Пока вы не скачали файл и не заменили его на хостинге — на «живом» сайте изменения не появятся.</p>
+    </details>
+
+    <p class="load-error" id="admin-error" hidden></p>
+    <div class="admin-grid" id="admin-grid"></div>
+  </div>
+
+  <script src="js/admin.js" type="module"></script>
+</body>
+</html>

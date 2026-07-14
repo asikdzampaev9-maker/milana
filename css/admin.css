@@ -1,0 +1,321 @@
+/* Стили админ-панели Milana Group */
+
+.admin {
+  background: #f5f5f5;
+}
+
+/* Экран ввода пароля */
+.admin-gate {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+}
+
+.admin-gate[hidden] {
+  display: none;
+}
+
+.admin-gate-box {
+  width: min(360px, 100%);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  text-align: center;
+}
+
+.admin-gate-box .logo-mark {
+  margin: 0 auto 1rem;
+}
+
+.admin-gate-box h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.admin-gate-box label {
+  display: block;
+  text-align: left;
+  margin: 1rem 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.admin-gate-box input {
+  display: block;
+  width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.65rem 0.75rem;
+  font: inherit;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.admin-gate-box input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+/* Панель */
+.admin-app[hidden] {
+  display: none;
+}
+
+.admin-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 4vw;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-header-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.admin-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem 4vw 0.5rem;
+}
+
+.admin-toolbar h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.admin-search {
+  font: inherit;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  min-width: min(280px, 60vw);
+}
+
+.admin-search:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.admin-actions-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 4vw;
+  position: sticky;
+  top: 63px;
+  z-index: 9;
+  background: #f5f5f5;
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-actions-bar-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.admin-actions-bar .btn-ghost {
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.admin-import {
+  cursor: pointer;
+}
+
+.admin-draft-state {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.admin-dirty {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.admin-clean {
+  color: #2d6a4f;
+  font-weight: 600;
+}
+
+.admin-help {
+  margin: 1rem 4vw 0;
+  padding: 0.85rem 1.1rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+}
+
+.admin-help summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.admin-help ol {
+  margin: 0.75rem 0 0.5rem;
+  padding-left: 1.25rem;
+}
+
+.admin-help li {
+  margin-bottom: 0.35rem;
+}
+
+.admin-help code {
+  background: #f0f0f0;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+.admin-note {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* Сетка карточек */
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1rem;
+  padding: 1.25rem 4vw 4rem;
+}
+
+.admin-card {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 0.85rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.85rem;
+}
+
+.admin-card[hidden] {
+  display: none;
+}
+
+.admin-card-img {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  background: #fafafa;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+}
+
+.admin-card-main {
+  min-width: 0;
+}
+
+.admin-card-head {
+  margin-bottom: 0.5rem;
+}
+
+.admin-card-head h3 {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.admin-card-cat {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.admin-field {
+  margin-top: 0.5rem;
+}
+
+.admin-field label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+}
+
+.admin-field input,
+.admin-field textarea {
+  width: 100%;
+  font: inherit;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  resize: vertical;
+}
+
+.admin-field input:focus,
+.admin-field textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.admin-field-price {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "label label" "input preview";
+  align-items: center;
+  gap: 0.2rem 0.6rem;
+}
+
+.admin-field-price label {
+  grid-area: label;
+}
+
+.admin-field-price input {
+  grid-area: input;
+}
+
+.admin-price-preview {
+  grid-area: preview;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .admin-header,
+  .admin-toolbar,
+  .admin-actions-bar,
+  .admin-help,
+  .admin-grid {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .admin-grid {
+    grid-template-columns: 1fr;
+  }
+  .admin-actions-bar {
+    top: 59px;
+  }
+}
