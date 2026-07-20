@@ -32,3 +32,8 @@ scratch_preview/
 # Промежуточные артефакты сборки каталога (не нужны сайту)
 data/catalog-source/
 data/images-extracted/
+
+# Промежуточные папки с фото (не для репозитория)
+data/images/products-clean/
+data/images/products-final/
+data/images/products-band-backup/

@@ -36,15 +36,30 @@
   </header>
 
   <section class="hero">
-    <p class="hero-eyebrow">Мебель для дома</p>
-    <h1>Выберите предметы из каталога — оформите заявку в один шаг</h1>
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Мебельная фабрика · доставка по России</p>
+      <h1>Диваны, кровати и кресла <span class="hero-accent">от фабрики Milana</span></h1>
+      <p class="hero-sub">Собственное производство мягкой мебели. Выберите модель из каталога и оставьте заявку в один клик — поможем с выбором и рассчитаем стоимость.</p>
+      <div class="hero-cta">
+        <button type="button" class="btn-primary btn-lg" id="btn-scroll-catalog">Смотреть каталог</button>
+        <a class="btn-outline btn-lg" href="#contact">Получить консультацию</a>
+      </div>
+      <ul class="hero-badges">
+        <li><span class="hero-badge-ic">🛋️</span> Своё производство</li>
+        <li><span class="hero-badge-ic">🚚</span> Доставка по РФ</li>
+        <li><span class="hero-badge-ic">✅</span> Гарантия качества</li>
+      </ul>
+    </div>
   </section>
 
   <main>
     <div class="toolbar">
-      <h2>Коллекция</h2>
-      <p class="toolbar-hint" id="catalog-meta"></p>
+      <div>
+        <h2>Каталог мебели</h2>
+        <p class="toolbar-hint" id="catalog-meta"></p>
+      </div>
     </div>
+    <div class="filter-bar" id="filter-bar"></div>
     <div class="catalog-grid" id="catalog-grid"></div>
     <p class="load-error" id="catalog-error" hidden></p>
 
@@ -161,6 +176,6 @@
     </div>
   </dialog>
 
-  <script src="js/app.js?v=4" type="module"></script>
+  <script src="js/app.js?v=5" type="module"></script>
 </body>
 </html>

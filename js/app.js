@@ -181,20 +181,68 @@ function resetOrderModal() {
 function cardTemplate(item) {
   const title = escapeHtml(displayItemName(item));
   const price = displayItemPrice(item);
+  const cat = escapeHtml(displayItemCategory(item) || "");
   const priceHtml = price
-    ? `<p class="card-price">${escapeHtml(price)}</p>`
-    : `<p class="card-price card-price--muted">Цена по запросу</p>`;
+    ? `<span class="card-price">${escapeHtml(price)}</span>`
+    : `<span class="card-price card-price--muted">Цена по запросу</span>`;
   return `
-    <button type="button" class="card" data-id="${item.id}" aria-label="${title}, подробнее">
-      <div class="card-image-wrap">
-        <img src="${item.image}" alt="" loading="lazy" width="400" height="300" />
-      </div>
-      <div class="card-body card-body--title-only">
-        <h3 class="card-title">${title}</h3>
-        ${priceHtml}
-      </div>
-    </button>
+    <article class="card" data-id="${item.id}" data-category="${escapeHtml(item.category || "Прочее")}">
+      <button type="button" class="card-hit" aria-label="${title}, подробнее">
+        <div class="card-image-wrap">
+          <img src="${item.image}" alt="${title}" loading="lazy" width="400" height="300" />
+          ${cat ? `<span class="card-cat">${cat}</span>` : ""}
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">${title}</h3>
+          <div class="card-foot">
+            ${priceHtml}
+            <span class="card-more" aria-hidden="true">Подробнее →</span>
+          </div>
+        </div>
+      </button>
+    </article>
   `;
+}
+
+/** Каталог с фильтром по категориям. */
+let loadedItems = [];
+let activeCategory = "Все";
+
+function renderGrid() {
+  const grid = document.getElementById("catalog-grid");
+  if (!grid) return;
+  const items =
+    activeCategory === "Все"
+      ? loadedItems
+      : loadedItems.filter((i) => (i.category || "Прочее") === activeCategory);
+  grid.innerHTML = items.map(cardTemplate).join("");
+  const meta = document.getElementById("catalog-meta");
+  if (meta) {
+    meta.textContent =
+      activeCategory === "Все"
+        ? `${loadedItems.length} моделей`
+        : `${items.length} · ${activeCategory}`;
+  }
+}
+
+function renderFilters() {
+  const bar = document.getElementById("filter-bar");
+  if (!bar) return;
+  const counts = {};
+  for (const it of loadedItems) {
+    const c = it.category || "Прочее";
+    counts[c] = (counts[c] || 0) + 1;
+  }
+  const cats = ["Все", ...Object.keys(counts).sort((a, b) => counts[b] - counts[a])];
+  bar.innerHTML = cats
+    .map((c) => {
+      const n = c === "Все" ? loadedItems.length : counts[c];
+      const on = c === activeCategory ? " chip--active" : "";
+      return `<button type="button" class="chip${on}" data-cat="${escapeHtml(c)}">${escapeHtml(
+        c
+      )}<span class="chip-count">${n}</span></button>`;
+    })
+    .join("");
 }
 
 async function openProductModal(id) {
@@ -521,6 +569,18 @@ async function init() {
     if (card) openProductModal(card.dataset.id);
   });
 
+  const filterBar = document.getElementById("filter-bar");
+  if (filterBar) {
+    filterBar.addEventListener("click", (e) => {
+      const chip = e.target.closest(".chip[data-cat]");
+      if (!chip) return;
+      activeCategory = chip.dataset.cat;
+      renderFilters();
+      renderGrid();
+      grid.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
   renderCart(loadCart());
   initContactForm();
 
@@ -532,7 +592,6 @@ async function init() {
       return r.json();
     })
     .then(async (catalog) => {
-      renderCatalogMeta(catalog);
       const settled = await Promise.all(
         catalog.items.map((id) =>
           fetchItem(id)
@@ -543,11 +602,9 @@ async function init() {
             })
         )
       );
-      const fragments = [];
-      for (const r of settled) {
-        if (r.ok) fragments.push(cardTemplate(r.item));
-      }
-      grid.innerHTML = fragments.join("");
+      loadedItems = settled.filter((r) => r.ok).map((r) => r.item);
+      renderFilters();
+      renderGrid();
     })
     .catch(() => {
       errEl.hidden = false;
