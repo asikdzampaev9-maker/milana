@@ -111,51 +111,59 @@ img { max-width: 100%; }
 }
 
 /* ---------- Hero ---------- */
+/* Главный блок: светлый, с фото товара — без «красного квадрата» */
 .hero {
   position: relative;
-  margin: 1rem 4vw 0;
-  padding: clamp(2.5rem, 6vw, 5rem) clamp(1.5rem, 5vw, 4.5rem);
+  margin: 1.25rem 4vw 0;
+  padding: clamp(1.75rem, 4vw, 3.25rem) clamp(1.5rem, 4vw, 3.25rem);
   border-radius: 28px;
-  background: var(--grad);
-  color: #fff;
+  background: var(--bg-warm);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  display: grid;
+  gap: 2rem;
+  align-items: center;
   overflow: hidden;
-  isolation: isolate;
 }
-.hero::before {
-  content: ""; position: absolute; inset: 0; z-index: -1;
-  background:
-    radial-gradient(700px 320px at 92% -10%, rgba(255, 255, 255, 0.28), transparent 60%),
-    radial-gradient(500px 300px at 8% 120%, rgba(255, 210, 120, 0.35), transparent 60%);
+@media (min-width: 900px) {
+  .hero { grid-template-columns: 1.05fr 1fr; gap: 3rem; }
 }
-.hero-inner { max-width: 660px; }
+.hero-inner { max-width: 620px; }
 .hero-eyebrow {
-  margin: 0 0 0.9rem; font-size: 0.74rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.16em;
-  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 0.85rem; font-size: 0.72rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.17em; color: var(--accent);
 }
 .hero h1 {
-  margin: 0 0 1rem;
-  font-size: clamp(2rem, 5vw, 3.4rem);
+  margin: 0 0 0.9rem;
+  font-size: clamp(1.9rem, 4vw, 2.9rem);
   font-weight: 800; line-height: 1.08; letter-spacing: -0.03em;
 }
 .hero-accent {
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.22);
-  padding: 0 0.35em; border-radius: 10px;
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: var(--accent);
 }
 .hero-sub {
-  margin: 0 0 1.75rem; max-width: 540px;
-  font-size: clamp(0.98rem, 1.5vw, 1.12rem);
-  color: rgba(255, 255, 255, 0.94);
+  margin: 0 0 1.6rem; max-width: 46ch;
+  font-size: clamp(0.95rem, 1.4vw, 1.05rem); color: var(--muted);
 }
-.hero-cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2rem; }
-.hero-badges {
+.hero-cta { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-bottom: 1.75rem; }
+.hero-stats {
   list-style: none; margin: 0; padding: 0;
-  display: flex; flex-wrap: wrap; gap: 1.2rem;
-  font-size: 0.9rem; font-weight: 600;
+  display: flex; flex-wrap: wrap; gap: 1.75rem;
+  font-size: 0.85rem; color: var(--muted);
 }
-.hero-badges li { display: flex; align-items: center; gap: 0.45rem; }
-.hero-badge-ic { font-size: 1.1rem; }
+.hero-stats b {
+  display: block; font-size: 1.05rem; font-weight: 800; color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.hero-shot {
+  background: #fff; border-radius: 20px; padding: 0.9rem;
+  box-shadow: var(--shadow); border: 1px solid var(--line);
+}
+.hero-shot img {
+  width: 100%; height: auto; display: block; border-radius: 12px;
+}
 
 /* ---------- Buttons ---------- */
 .btn-primary {
@@ -172,12 +180,12 @@ img { max-width: 100%; }
 .btn-outline {
   font: inherit; font-weight: 700; border-radius: 14px;
   padding: 0.95rem 1.75rem; font-size: 1.02rem;
-  background: rgba(255, 255, 255, 0.14); color: #fff;
-  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  background: #fff; color: var(--ink);
+  border: 1.5px solid var(--line);
   cursor: pointer; text-decoration: none; display: inline-flex; align-items: center;
-  transition: background 0.2s, transform 0.15s;
+  transition: border-color 0.2s, color 0.2s, transform 0.15s;
 }
-.btn-outline:hover { background: rgba(255, 255, 255, 0.26); transform: translateY(-2px); }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
 
 /* ---------- Main / toolbar ---------- */
 main { padding: 2.5rem 4vw 4rem; }

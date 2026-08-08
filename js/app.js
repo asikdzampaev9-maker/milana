@@ -473,9 +473,10 @@ async function init() {
   const drawerCart = document.getElementById("drawer-cart");
   const modalOrder = document.getElementById("modal-order");
 
-  document.getElementById("btn-scroll-catalog").addEventListener("click", () => {
-    grid.scrollIntoView({ behavior: "smooth" });
-  });
+  // Кнопок «Каталог» две — в шапке и в главном блоке.
+  for (const btn of document.querySelectorAll(".js-scroll-catalog")) {
+    btn.addEventListener("click", () => grid.scrollIntoView({ behavior: "smooth" }));
+  }
 
   document.getElementById("btn-open-cart").addEventListener("click", () => {
     drawerCart.showModal();
@@ -603,6 +604,8 @@ async function init() {
         )
       );
       loadedItems = settled.filter((r) => r.ok).map((r) => r.item);
+      const heroCount = document.getElementById("hero-count");
+      if (heroCount) heroCount.textContent = String(loadedItems.length);
       renderFilters();
       renderGrid();
     })
