@@ -436,3 +436,9 @@ dialog::backdrop { background: rgba(25, 15, 12, 0.5); backdrop-filter: blur(5px)
 @media (max-width: 330px) {
   .catalog-grid { grid-template-columns: 1fr; }
 }
+
+/* Логотип-картинка из img/logo.png. Пока файла нет — показывается текстовый вариант. */
+.brand-logo { display: none; height: 46px; width: auto; }
+.brand--img .brand-logo { display: block; }
+.brand--img .brand-fallback { display: none; }
+@media (max-width: 640px) { .brand-logo { height: 38px; } }
