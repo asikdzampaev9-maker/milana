@@ -46,6 +46,34 @@ img { max-width: 100%; }
   backdrop-filter: saturate(180%) blur(14px);
   border-bottom: 1px solid var(--line);
 }
+/* Логотип-леттеринг: без плашки, в стиле заголовков печатного каталога */
+.brand {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0;
+  text-decoration: none;
+  color: inherit;
+}
+.brand-word {
+  font-style: italic;
+  font-weight: 800;
+  font-size: 1.65rem;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  padding-bottom: 5px;
+  border-bottom: 3px solid transparent;
+  border-image: var(--grad) 1;
+}
+.brand-dot { color: var(--accent); }
+.brand-sub {
+  margin-top: 5px;
+  font-size: 0.63rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
 .logo { display: flex; align-items: center; gap: 0.7rem; }
 .logo-mark {
   width: 44px; height: 44px;
