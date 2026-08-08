@@ -225,6 +225,44 @@ function renderGrid() {
   }
 }
 
+/** Плитки категорий в главном блоке. Фото — самые выигрышные модели категории. */
+const TILE_PICK = {
+  "Диваны": "p17-3",
+  "Кровати": "p26-1",
+  "Кресла": "p27-3",
+  "Комплекты": "p21-2",
+  "Пуфы": "p27-4",
+  "Банкетки": "p27-1",
+};
+
+function renderHeroTiles() {
+  const box = document.getElementById("hero-tiles");
+  if (!box) return;
+  const byCat = {};
+  for (const it of loadedItems) {
+    const c = it.category || "Прочее";
+    (byCat[c] = byCat[c] || []).push(it);
+  }
+  const cats = Object.keys(byCat)
+    .sort((a, b) => byCat[b].length - byCat[a].length)
+    .slice(0, 4);
+  box.innerHTML = cats
+    .map((c) => {
+      const list = byCat[c];
+      const pick = list.find((i) => i.id === TILE_PICK[c]) || list[0];
+      const word = list.length % 10 === 1 && list.length % 100 !== 11 ? "модель" : "моделей";
+      return `
+        <button type="button" class="hero-tile" data-cat="${escapeHtml(c)}">
+          <span class="hero-tile-head">
+            <b>${escapeHtml(c)}</b>
+            <span>${list.length} ${word}</span>
+          </span>
+          <img src="${pick.image}" alt="" loading="lazy" />
+        </button>`;
+    })
+    .join("");
+}
+
 function renderFilters() {
   const bar = document.getElementById("filter-bar");
   if (!bar) return;
@@ -570,6 +608,18 @@ async function init() {
     if (card) openProductModal(card.dataset.id);
   });
 
+  const heroTiles = document.getElementById("hero-tiles");
+  if (heroTiles) {
+    heroTiles.addEventListener("click", (e) => {
+      const tile = e.target.closest(".hero-tile[data-cat]");
+      if (!tile) return;
+      activeCategory = tile.dataset.cat;
+      renderFilters();
+      renderGrid();
+      grid.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
   const filterBar = document.getElementById("filter-bar");
   if (filterBar) {
     filterBar.addEventListener("click", (e) => {
@@ -606,6 +656,7 @@ async function init() {
       loadedItems = settled.filter((r) => r.ok).map((r) => r.item);
       const heroCount = document.getElementById("hero-count");
       if (heroCount) heroCount.textContent = String(loadedItems.length);
+      renderHeroTiles();
       renderFilters();
       renderGrid();
     })

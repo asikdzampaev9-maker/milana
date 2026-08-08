@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:ital,wght@0,400;0,500;0,600;0,700;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=3" />
+  <link rel="stylesheet" href="css/styles.css?v=4" />
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -35,21 +35,14 @@
   <section class="hero">
     <div class="hero-inner">
       <p class="hero-eyebrow">Мебельная фабрика · доставка по России</p>
-      <h1>Диваны, кровати<br>и кресла <span class="hero-accent">от фабрики</span></h1>
-      <p class="hero-sub">Собственное производство мягкой мебели. Выберите модель из каталога — поможем с выбором и рассчитаем стоимость.</p>
+      <h1>Мягкая мебель<br><span class="hero-accent">собственного производства</span></h1>
+      <p class="hero-sub"><b id="hero-count">78</b> моделей диванов, кроватей и кресел. Поможем с выбором и рассчитаем стоимость.</p>
       <div class="hero-cta">
         <button type="button" class="btn-primary btn-lg js-scroll-catalog">Смотреть каталог</button>
         <a class="btn-outline btn-lg" href="#contact">Получить консультацию</a>
       </div>
-      <ul class="hero-stats">
-        <li><b id="hero-count">78</b> моделей</li>
-        <li><b>Своё</b> производство</li>
-        <li><b>Доставка</b> по РФ</li>
-      </ul>
     </div>
-    <div class="hero-shot">
-      <img src="data/images/products/p04-1.jpg" alt="Диван «Лофт» — мягкая мебель Milana" width="1000" height="750" />
-    </div>
+    <div class="hero-tiles" id="hero-tiles"></div>
   </section>
 
   <main>
@@ -176,6 +169,6 @@
     </div>
   </dialog>
 
-  <script src="js/app.js?v=6" type="module"></script>
+  <script src="js/app.js?v=7" type="module"></script>
 </body>
 </html>
