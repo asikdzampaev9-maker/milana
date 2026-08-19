@@ -8,21 +8,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:ital,wght@0,400;0,500;0,600;0,700;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css?v=6" />
+  <link rel="stylesheet" href="css/styles.css?v=8" />
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="img/favicon-192.png" />
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
 
   <header class="site-header">
-    <!-- Логотип: если в img/ лежит logo.png — подставляется он,
-         иначе остаётся текстовый вариант (сайт не ломается). -->
     <a class="brand" href="#" aria-label="Milana Group — на главную">
-      <img class="brand-logo" src="img/logo.png" alt="Milana Group"
-           onload="this.closest('.brand').classList.add('brand--img')"
-           onerror="this.remove()" />
-      <span class="brand-fallback">
-        <span class="brand-word">Milana<span class="brand-dot">.</span></span>
-        <span class="brand-sub">Мебельная фабрика</span>
+      <img class="brand-mark" src="img/logo-mark.png" alt="" onerror="this.remove()" />
+      <span class="brand-text">
+        <span class="brand-name"><b>MILANA</b> GROUP</span>
+        <span class="brand-sub">Мебельный магазин</span>
       </span>
     </a>
     <nav class="nav-actions">
@@ -36,6 +35,9 @@
         </svg>
         <span class="cart-badge" id="cart-badge" hidden>0</span>
       </button>
+      <!-- Логотип в правом верхнем углу. Показывается только если есть img/logo.png -->
+      <img class="logo-corner" src="img/logo.png" alt="Milana Group" 
+           onerror="this.remove()" />
     </nav>
   </header>
 

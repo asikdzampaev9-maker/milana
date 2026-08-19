@@ -46,32 +46,26 @@ img { max-width: 100%; }
   backdrop-filter: saturate(180%) blur(14px);
   border-bottom: 1px solid var(--line);
 }
-/* Логотип-леттеринг: без плашки, в стиле заголовков печатного каталога */
+/* Логотип: фирменный знак + название */
 .brand {
   display: inline-flex;
-  flex-direction: column;
-  gap: 0;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6rem;
   text-decoration: none;
   color: inherit;
 }
-.brand-word {
-  font-style: italic;
-  font-weight: 800;
-  font-size: 1.65rem;
-  line-height: 1;
-  letter-spacing: -0.025em;
-  padding-bottom: 5px;
-  border-bottom: 3px solid transparent;
-  border-image: var(--grad) 1;
+.brand-mark { height: 44px; width: auto; display: block; }
+.brand-text { display: flex; flex-direction: column; }
+.brand-name {
+  font-size: 1.06rem; font-weight: 800; letter-spacing: 0.01em; line-height: 1.1;
+  color: var(--ink);
 }
-.brand-dot { color: var(--accent); }
+.brand-name b { color: var(--accent); font-weight: 800; }
 .brand-sub {
-  margin-top: 5px;
-  font-size: 0.63rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--muted);
+  margin-top: 2px;
+  font-size: 0.62rem; font-weight: 600;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
 }
 
 .logo { display: flex; align-items: center; gap: 0.7rem; }
@@ -437,9 +431,13 @@ dialog::backdrop { background: rgba(25, 15, 12, 0.5); backdrop-filter: blur(5px)
   .catalog-grid { grid-template-columns: 1fr; }
 }
 
-/* Логотип-картинка из img/logo.png. Пока файла нет — показывается текстовый вариант. */
-.brand-fallback { display: flex; flex-direction: column; }
-.brand-logo { display: none; height: 46px; width: auto; }
-.brand--img .brand-logo { display: block; }
-.brand--img .brand-fallback { display: none; }
-@media (max-width: 640px) { .brand-logo { height: 38px; } }
+
+/* Логотип в правом верхнем углу (появляется, когда есть img/logo.png) */
+.logo-corner { height: 42px; width: auto; display: block; margin-left: 0.35rem; }
+@media (max-width: 720px) { .logo-corner { display: none; } }
+
+@media (max-width: 640px) {
+  .brand-mark { height: 36px; }
+  .brand-name { font-size: 0.95rem; }
+  .brand-sub { font-size: 0.55rem; letter-spacing: 0.12em; }
+}
