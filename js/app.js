@@ -229,8 +229,8 @@ function renderGrid() {
 const TILE_PICK = {
   "Диваны": "p17-3",
   "Кровати": "p26-1",
-  "Кресла": "p27-3",
-  "Комплекты": "p21-2",
+  "Кресла": "p27-6",
+  "Комплекты": "p21-1",
   "Пуфы": "p27-4",
   "Банкетки": "p27-1",
 };
@@ -249,7 +249,8 @@ function renderHeroTiles() {
   box.innerHTML = cats
     .map((c) => {
       const list = byCat[c];
-      const pick = list.find((i) => i.id === TILE_PICK[c]) || list[0];
+      const pick =
+        loadedItems.find((i) => i.id === TILE_PICK[c]) || list[0];
       const word = list.length % 10 === 1 && list.length % 100 !== 11 ? "модель" : "моделей";
       return `
         <button type="button" class="hero-tile" data-cat="${escapeHtml(c)}">
